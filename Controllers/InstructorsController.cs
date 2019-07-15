@@ -19,36 +19,28 @@ namespace ContosoUniversity.Controllers
         {
             _context = context;
         }
-
-        // GET: Instructors
-        /*
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Instructors.ToListAsync());
-        }*/
         public async Task<IActionResult> Index(int? id, int? courseID)
         {
             var viewModel = new InstructorIndexData();
             viewModel.Instructors = await _context.Instructors
-                  .Include(i => i.OfficeAssignment)
-                  .Include(i => i.CourseAssignments)
-                    .ThenInclude(i => i.Course)
+                  .Include          (i => i.OfficeAssignment)
+                  .Include          (i => i.CourseAssignments)
+                    .ThenInclude    (i => i.Course)
                         .ThenInclude(i => i.Department)
-                  .OrderBy(i => i.LastName)
+                  .OrderBy          (i => i.LastName)
                   .ToListAsync();
 
             if (id != null)
             {
                 ViewData["InstructorID"] = id.Value;
-                Instructor instructor = viewModel.Instructors.Where(
-                    i => i.ID == id.Value).Single();
-                viewModel.Courses = instructor.CourseAssignments.Select(s => s.Course);
+                Instructor instructor = viewModel.Instructors.Where(i => i.ID == id.Value).Single();
+                viewModel.Courses     = instructor.CourseAssignments.Select(s => s.Course);
             }
 
             if (courseID != null)
             {
                 ViewData["CourseID"] = courseID.Value;
-                var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
+                var selectedCourse   = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
                 await _context.Entry(selectedCourse).Collection(x => x.Enrollments).LoadAsync();
                 foreach (Enrollment enrollment in selectedCourse.Enrollments)
                 {

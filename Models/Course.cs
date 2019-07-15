@@ -19,11 +19,27 @@ namespace ContosoUniversity.Models
         [Range(0, 5)]
         public int Credits { get; set; }
 
+
+
+
+
+
+        //this information can be seen from the "create" controller.
+        [Display(Name = "DepartmentID")]
         public int DepartmentID { get; set; }
 
 
+
+
+        //this information can't be seen from the "create" controller.
         [Display(Name = "DepartmentName")]
         public string DepartmentName { get; set; }
+
+
+
+
+
+
 
         public Department Department { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }

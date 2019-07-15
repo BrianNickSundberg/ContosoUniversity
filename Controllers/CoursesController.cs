@@ -46,9 +46,11 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Courses/Create
+        
         public IActionResult Create()
         {
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
+            ViewData["DepartmentID"]   = new SelectList(_context.Departments, "DepartmentID",   "DepartmentID");
+            ViewData["DepartmentName"] = new SelectList(_context.Departments, "DepartmentName", "DepartmentName");
             return View();
         }
 
@@ -65,12 +67,14 @@ namespace ContosoUniversity.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentID"]    = new SelectList(_context.Departments, "DepartmentID",   "DepartmentID",   course.DepartmentID);
-            ViewData["DepartmentName"]  = new SelectList(_context.Departments, "DepartmentName",  course.DepartmentName);
+            //this one works.
+            ViewData["DepartmentID"]    = new SelectList(_context.Departments, "DepartmentID",   "DepartmentID",   course.Department);
 
 
+            //this one does not work.
+            //ViewData["DepartmentName"]  = new SelectList(_context.Departments, "DepartmentName", "DepartmentName", course.DepartmentName);
 
-          
+
             return View(course);
         }
 
@@ -87,8 +91,9 @@ namespace ContosoUniversity.Controllers
             {
                 return NotFound();
             }
+
+
             ViewData["DepartmentID"]   = new SelectList(_context.Departments, "DepartmentID",   "DepartmentID",   course.DepartmentID);
-            ViewData["DepartmentName"] = new SelectList(_context.Departments, "DepartmentName", "DepartmentName", course.Department.Name);
             return View(course);
         }
 
@@ -125,7 +130,7 @@ namespace ContosoUniversity.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DepartmentID"]   = new SelectList(_context.Departments, "DepartmentID", "DepartmentID", course.DepartmentID);
-            ViewData["DepartmentName"] = new SelectList(_context.Departments, "DepartmentName", "DepartmentName", selectedValue: course.DepartmentName);
+            //ViewData["DepartmentName"] = new SelectList(_context.Departments, "DepartmentName", "DepartmentName", selectedValue: course.DepartmentName);
             return View(course);
         }
 
